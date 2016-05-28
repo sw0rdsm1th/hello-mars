@@ -26,8 +26,20 @@ corpus = [dictionary.doc2bow(text) for text in texts]
 tfidf = models.TfidfModel(corpus)
 corpus_tfidf = tfidf[corpus]
 
-
 # I can print out the topics for LSA
 lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=5)
 corpus_lsi = lsi[corpus]
+
+#for l,t in zip(corpus_lsi,corpus):
+#    print (l,"#",t)
+
+for top in lsi.print_topics(2):
+    print (top)
+
+# I can print out the documents and which is the most probable topics for each doc.
+lda = ldamodel.LdaModel(corpus, id2word=dictionary, num_topics=5)
+corpus_lda = lda[corpus]
+
+for l,t in zip(corpus_lda,corpus):
+    print (l,"#",t)
 
