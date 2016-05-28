@@ -11,3 +11,23 @@ documents = ["Human machine interface for lab abc computer applications",
               "The intersection graph of paths in trees",
               "Graph minors IV Widths of trees and well quasi ordering",
               "Graph minors A survey"]
+
+# remove common words and tokenize
+stoplist = set('for a of the and to in'.split())
+texts = [[word for word in document.lower().split() if word not in stoplist] for document in documents]
+
+# remove words that appear only once
+all_tokens = sum(texts, [])
+tokens_once = set(word for word in set(all_tokens) if all_tokens.count(word) == 1)
+texts = [[word for word in text if word not in tokens_once] for text in texts]
+
+dictionary = corpora.Dictionary(texts)
+corpus = [dictionary.doc2bow(text) for text in texts]
+tfidf = models.TfidfModel(corpus)
+corpus_tfidf = tfidf[corpus]
+
+
+# I can print out the topics for LSA
+lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=5)
+corpus_lsi = lsi[corpus]
+
