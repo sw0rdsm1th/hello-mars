@@ -1,3 +1,11 @@
 import urllib.request
 from bs4 import beautifulsoup
 
+#Wanted to read from Hacker News
+html = urllib.request.urlopen('https://news.ycombinator.com/').read()
+soup = BeautifulSoup(html, 'html.parser')
+texts = soup.findAll(text=True)
+
+# Looping through proper tags to print the news articles in a simple list format
+for a in soup.find_all('a'):
+    print(a)
